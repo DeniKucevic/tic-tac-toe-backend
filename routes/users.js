@@ -17,7 +17,7 @@ const userRoutes = (app) => {
 
         helpers.readFile(data => {
             if (apikey === undefined || name === undefined) {
-                res.status(400).send('learn to send api req')
+                res.status(400).send('learn to send api req you dingus')
             } else {
                 let regApiKey = Object.keys(data)
                 let match = regApiKey.indexOf(apikey)
@@ -26,9 +26,13 @@ const userRoutes = (app) => {
                 } else if (name === "") {
                     res.status(400).send('invalid name')
                 } else {
-                    data[apikey] = [...data[apikey], name]
+                    let id = data[apikey].length + 1
+                    data[apikey] = [...data[apikey], { name: name, id: id }]
                     helpers.writeFile(JSON.stringify(data, null, 2), () => {
-                        res.status(200).send("user registrated" + ':' + ' ' + `${name}`);
+                        res.status(200).send({
+                            "name": name,
+                            "id": id
+                        });
                     });
                 }
             }
